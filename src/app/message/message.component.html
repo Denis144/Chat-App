@@ -1,0 +1,14 @@
+<mat-card class="message">
+  <mat-card-title>{{ userName }}</mat-card-title>
+  <mat-card-subtitle>{{ timeStamp | date: "dd.MM.yy в HH:mm"}}</mat-card-subtitle>
+  <mat-card-content class="messageContent">{{ messageContent }}</mat-card-content>
+  <mat-card-actions *ngIf="flag" class="messBtns">
+    <a class="deleteBtn" (click)="deleteMsg()">
+      <mat-icon>delete</mat-icon>
+    </a>
+    <a class="editBtn" (click)="editMsg()">
+      <mat-icon>create</mat-icon>
+    </a>
+  </mat-card-actions>
+</mat-card>
+

@@ -1,0 +1,16 @@
+<div class="modalWindow">
+  <div class="modalTitle">
+    <h1 mat-dialog-title>{{data.name}}</h1>
+    <mat-card-subtitle>{{ data.time | date: "dd.MM.yy в hh:mm"}}</mat-card-subtitle>
+  </div>
+  <div mat-dialog-content class="modalContent">
+    <p>Edit your message:</p>
+    <mat-form-field>
+      <input matInput [(ngModel)]="data.message">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions class="modalBtns">
+    <button mat-button [mat-dialog-close]="data.message">Edit</button>
+    <button mat-button (click)="onNoClick()">Exit</button>
+  </div>
+</div>

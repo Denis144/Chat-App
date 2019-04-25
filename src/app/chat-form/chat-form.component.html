@@ -1,0 +1,4 @@
+<mat-form-field class="formField" appearance="standard">
+  <input matInput class="chatInput" [(ngModel)]="message" (keydown)="handleSubmit($event)" [value]="message" placeholder="Start typing your message..."/>
+</mat-form-field>
+<button mat-raised-button class="chatButton" (click)="send()" >Send</button>

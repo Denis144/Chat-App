@@ -1,0 +1,33 @@
+.message {
+    position: relative;
+    margin-bottom: 20px;
+    z-index: 999;
+}
+
+.messageContent {
+    word-break: break-all;
+    width: 90%;
+}
+
+.messBtns {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.deleteBtn {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    &:hover {
+        color: #5c5c5c;
+    }
+} 
+
+.editBtn {
+    display: flex;
+    justify-content: flex-end;
+    &:hover {
+        color: #5c5c5c;
+    }
+}

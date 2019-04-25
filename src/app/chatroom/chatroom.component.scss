@@ -1,0 +1,25 @@
+.chatWindow {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+    height: 70vh;
+    box-shadow: 0 0 5px;
+}
+.chatContent {
+    height: 100%;
+    padding: 20px 20px;
+    background-color: #fff;
+    overflow-y: auto;
+}
+.chatForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e4e4e4;
+}
+
+@media (min-width: 1200px) {
+    .chatWindow {
+        width: 40vw;
+    }
+}

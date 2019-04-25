@@ -1,0 +1,10 @@
+.modalTitle, .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modalBtns {
+    display: flex;
+    justify-content: center;
+} 
