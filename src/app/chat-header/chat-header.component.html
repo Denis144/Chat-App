@@ -1,0 +1,13 @@
+<mat-toolbar class="chatToolbar">
+  <p class="label">{{ label }} <mat-icon class="labelIcon">lens</mat-icon><span>online</span></p>
+  <span class="fill-space"></span>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>backspace</mat-icon>
+      <span>Log Out</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>

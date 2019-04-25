@@ -10,9 +10,11 @@ import { ChatService } from '../services/chat.service';
   providers: [ChatService]
 })
 export class ChatroomComponent {
+  userId: any;
 
   constructor(route: ActivatedRoute, chatService: ChatService) { 
     const el = route.snapshot.params['userId'];
     chatService.userId = parseInt(el.match(/\d+/));
+    this.userId = chatService.userId;
   }
 }

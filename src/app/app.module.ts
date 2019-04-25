@@ -14,6 +14,7 @@ import { ChatFormComponent } from './chat-form/chat-form.component';
 import { MessageComponent } from './message/message.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import { EditMessageComponent } from './edit-message/edit-message.component';
+import { ChatHeaderComponent } from './chat-header/chat-header.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EditMessageComponent } from './edit-message/edit-message.component';
     ChatFormComponent,
     MessageComponent,
     SignupFormComponent,
-    EditMessageComponent
+    EditMessageComponent,
+    ChatHeaderComponent
   ],
   imports: [
     BrowserModule,
