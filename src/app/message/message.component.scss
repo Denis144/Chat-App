@@ -31,3 +31,13 @@
         color: #5c5c5c;
     }
 }
+
+@media (max-width: 768px) {
+    .messageTitle {
+        font-size: 15px;
+    }
+
+    .messageSubtitle {
+        font-size: 10px;
+    }
+}
