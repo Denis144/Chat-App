@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 70vw;
     height: 75vh;
+    margin: 0 auto;
     box-shadow: 0 0 5px;
 }
 
@@ -28,5 +29,11 @@
 @media (min-width: 1200px) {
     .chatWindow {
         width: 40vw;
+    }
+}
+
+@media (max-width: 768px) {
+    .chatWindow {
+        width: 100vw;
     }
 }
