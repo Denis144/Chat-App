@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { BehaviorSubject } from 'rxjs';
-import {Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   currentUser = new BehaviorSubject<any>('');
-  subscription: Subscription;
 
   constructor() {}
 

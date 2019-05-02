@@ -9,14 +9,14 @@ import { ChatService } from '../services/chat.service';
 export class ChatFormComponent implements OnInit {
   message: string;
 
-  constructor(private chat: ChatService) {}
+  constructor(private chatService: ChatService) {}
 
   ngOnInit() {
   }
 
   send() {
     if (this.message.trim()) {
-      this.chat.sendMessage(this.message);
+      this.chatService.sendMessage(this.message);
       this.message = '';
     }
   }
