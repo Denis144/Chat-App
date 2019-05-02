@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../services/chat.service';
+import { UsersService } from '../services/users.service';
 import { ChatMessage } from '../models/chat-message.model';
 import { EditMessageComponent } from '../edit-message/edit-message.component';
 import { MatDialog } from '@angular/material';
@@ -12,29 +13,28 @@ import { MatDialog } from '@angular/material';
 })
 export class MessageComponent implements OnInit {
   @Input() chatMessage: ChatMessage;
+  currentUser: any;
   userName: string;
   messageContent: string;
   timeStamp: string;
   message: Array<ChatMessage>;
-  currentUserId: any;
-  flag: boolean = false;
- 
-  constructor(private chat: ChatService, public dialog: MatDialog, private route: ActivatedRoute) {}
+  flag = false;
+
+  constructor(private chat: ChatService, private usersService: UsersService, public dialog: MatDialog, private route: ActivatedRoute) {}
 
   ngOnInit(chatMessage = this.chatMessage) {
     this.messageContent = chatMessage.message;
     this.timeStamp = chatMessage.timeSend;
     this.userName = chatMessage.userName;
-    this.currentUserId = this.route.snapshot.paramMap.get('userId').slice(1);
-
-    this.checkUser(this.currentUserId);
+    this.checkUser();
   }
 
-  checkUser(id: any) {
-    const obj = JSON.parse(localStorage.getItem('users'));
-    if(obj[this.currentUserId]["userName"] === this.chatMessage.userName){
-      this.flag = true; 
-    }else {
+  checkUser() {
+    const observable = this.usersService.current();  
+    observable.subscribe(user => { this.currentUser = user; });
+    if (this.currentUser["userName"] === this.chatMessage.userName) {
+      this.flag = true;
+    } else {
       this.flag = false;
     }
   }
@@ -42,8 +42,8 @@ export class MessageComponent implements OnInit {
   deleteMsg() {
     const obj = JSON.parse(localStorage.getItem('messages'));
 
-    for(var key in obj) {
-      if(obj[key]["timeSend"] === this.chatMessage.timeSend) {
+    for (const key in obj) {
+      if (obj[key]['timeSend'] === this.chatMessage.timeSend) {
         obj.splice(key, 1);
         localStorage.setItem('messages', JSON.stringify(obj));
       }
@@ -60,7 +60,7 @@ export class MessageComponent implements OnInit {
       const obj = JSON.parse(localStorage.getItem('messages'));
 
       obj.find(mess => {
-        if(mess.timeSend === this.chatMessage.timeSend) {
+        if (mess.timeSend === this.chatMessage.timeSend) {
             mess.message = result || this.chatMessage.message;
           }
       });

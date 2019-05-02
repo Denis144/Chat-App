@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ChatGuardService }   from './services/chat-guard.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -36,7 +37,7 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [ChatGuardService],
   bootstrap: [AppComponent],
   entryComponents: [EditMessageComponent]
 })

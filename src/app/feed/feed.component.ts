@@ -10,10 +10,10 @@ import { ChatMessage } from '../models/chat-message.model';
 export class FeedComponent implements DoCheck, AfterViewChecked {
   feed: Array<ChatMessage>;
 
-  constructor(private chat: ChatService) { }
+  constructor(private chatService: ChatService) { }
 
   ngDoCheck() {
-    this.feed = this.chat.getMessages();
+    this.feed = this.chatService.getMessages();
   }
 
   ngAfterViewChecked() {
@@ -22,6 +22,6 @@ export class FeedComponent implements DoCheck, AfterViewChecked {
 
   autoScroll() {
     const element = document.querySelector('.feed');
-    element.scrollIntoView({block: "end", behavior: "smooth"});
+    element.scrollIntoView({block: 'end', behavior: 'smooth'});
   }
 }

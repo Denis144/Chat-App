@@ -1,27 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { UsersService } from '../services/users.service';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat-header',
   templateUrl: './chat-header.component.html',
   styleUrls: ['./chat-header.component.scss'],
-  providers: [AuthService]
+  providers: [AuthService, UsersService]
 })
-export class ChatHeaderComponent implements OnInit {
+export class ChatHeaderComponent {
   label: string;
-  @Input() currentUserId: any;
+  currentUser: any;
 
-  constructor(private router: Router, private authService: AuthService) { }
-
-  ngOnInit() {
-    const obj = JSON.parse(localStorage.getItem('users'));
-    //this.currentUserId = this.route.snapshot.paramMap.get('userId').slice(1);
-    this.label = obj[this.currentUserId]["userName"];
+  constructor(private usersService: UsersService, private authService: AuthService) {
+    const observable = this.usersService.current();  
+    observable.subscribe(user => { this.currentUser = user; });
+    this.label = this.currentUser["userName"];
   }
 
   logout() {
-    this.router.navigate(['']);
+    this.authService.logout();
     this.label = '';
   }
 }

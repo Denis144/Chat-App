@@ -1,25 +1,29 @@
 import { Injectable } from '@angular/core';
 import { ChatMessage } from '../models/chat-message.model';
+import { UsersService } from '../services/users.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
   userName: string;
-  userId: any;
+  currentUser: any;
   timestamp: any;
   chatMessages: Array<ChatMessage> = new Array<ChatMessage>();
   editMsg: string;
 
-  constructor() {}
+  constructor(private usersService: UsersService) {
+    const observable = this.usersService.current();  
+    observable.subscribe(user => { this.currentUser = user; });
+  }
 
   sendMessage(msg: string) {
-    if(!localStorage.getItem('messages')) {
+    if (!localStorage.getItem('messages')) {
       localStorage.setItem('messages', JSON.stringify(this.chatMessages));
     }
 
     this.timestamp = this.getTimeStamp();
-    this.userName = this.getUserName(this.userId);
+    this.userName = this.getUserName();
     this.chatMessages = this.getMessages();
     this.chatMessages.push({
       message: msg,
@@ -29,9 +33,8 @@ export class ChatService {
     localStorage.setItem('messages', JSON.stringify(this.chatMessages));
   }
 
-  getUserName(id: any) {
-    const obj = JSON.parse(localStorage.getItem('users'));
-    return obj[id]['userName'];
+  getUserName() {
+    return this.currentUser["userName"];
   }
 
   getMessages(): Array<ChatMessage> {
@@ -40,13 +43,12 @@ export class ChatService {
 
   getTimeStamp() {
     const now = new Date();
-    const date = now.getFullYear() + '/' + 
+    const date = now.getFullYear() + '/' +
                  (now.getMonth() + 1) + '/' +
                  now.getDay();
-    const time = now.getHours() + ':' + 
+    const time = now.getHours() + ':' +
                  now.getMinutes() + ':' +
                  now.getSeconds();
-    console.log(date + ' ' + time);
     return (date + ' ' + time);
   }
 }

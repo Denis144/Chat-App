@@ -6,6 +6,6 @@
       <input matInput placeholder="Enter your name and surname" name="name" formControlName="userName" required>
       <mat-error [class.hidden]="!formModel.hasError('userNameValidator', 'userName')">Invalid first or last name</mat-error>
     </mat-form-field>
-    <button mat-raised-button (click)="signUp()" [disabled]="formModel.invalid">Log In</button>
+    <button mat-raised-button (click)="submit()" [disabled]="formModel.invalid">Log In</button>
   </div>
 </div>
