@@ -1,6 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ChatService } from '../services/chat.service';
 import { MessagesService } from '../services/messages.service';
 import { ChatMessage } from '../models/chat-message.model';
 
@@ -16,7 +14,7 @@ export class MessageComponent implements OnInit {
   timeStamp: string;
   isEdit = false;
 
-  constructor(private chat: ChatService, private messagesService: MessagesService) {}
+  constructor(private messagesService: MessagesService) {}
 
   ngOnInit(chatMessage = this.chatMessage) {
     this.messageContent = chatMessage.message;

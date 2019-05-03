@@ -2,6 +2,7 @@ import { Component, DoCheck, AfterViewChecked, Input } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ChatMessage } from '../models/chat-message.model';
 import { MessagesService } from '../services/messages.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-feed',
@@ -10,11 +11,12 @@ import { MessagesService } from '../services/messages.service';
 })
 export class FeedComponent implements AfterViewChecked, DoCheck {
   feed: Array<ChatMessage> = new Array<ChatMessage>();
+  subscription: Subscription;
 
   constructor(private chatService: ChatService, private messagesService: MessagesService) {}
 
   ngDoCheck() {
-    this.messagesService.getMessages().subscribe(messages => { 
+      this.subscription = this.messagesService.getMessages().subscribe(messages => { 
       this.feed = messages.concat();
     });
   }
@@ -26,5 +28,12 @@ export class FeedComponent implements AfterViewChecked, DoCheck {
   autoScroll() {
     const element = document.querySelector('.feed');
     element.scrollIntoView({block: 'end', behavior: 'smooth'});
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 }

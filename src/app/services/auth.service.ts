@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,10 +12,11 @@ export class AuthService {
   usersList: Array<User> = new Array<User>();
   currentUser: any;
   isNewUser: boolean;
+  subscription: Subscription;
 
   constructor(private router: Router, private usersService: UsersService) {
     const observable = this.usersService.current();  
-    observable.subscribe(user => { this.currentUser = user; });
+    this.subscription = observable.subscribe(user => { this.currentUser = user; });
   }
 
   userNameValidator(control: FormControl): any {
@@ -69,4 +71,10 @@ export class AuthService {
     this.router.navigate(['']);
   }
 
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
 }

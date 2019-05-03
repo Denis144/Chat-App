@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ChatMessage } from '../models/chat-message.model';
 import { UsersService } from '../services/users.service';
 import { MessagesService } from '../services/messages.service';
+import { Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,11 @@ export class ChatService {
   timestamp: any;
   chatMessages: Array<ChatMessage> = new Array<ChatMessage>();
   editMsg: string;
+  subscription: Subscription;
 
   constructor(private usersService: UsersService, private messagesService: MessagesService ) {
     const userObservable = this.usersService.current();  
-    userObservable.subscribe(user => { this.currentUser = user; });
+    this.subscription = userObservable.subscribe(user => { this.currentUser = user; });
   }
 
   sendMessage(msg: string) {
@@ -36,7 +38,6 @@ export class ChatService {
     });
 
     localStorage.setItem('messages', JSON.stringify(this.chatMessages));
-    //this.messagesService.sendMessages();
   }
 
   getUserName() {
@@ -56,5 +57,12 @@ export class ChatService {
                  now.getMinutes() + ':' +
                  now.getSeconds();
     return (date + ' ' + time);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
   }
 }
