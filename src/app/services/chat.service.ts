@@ -16,11 +16,6 @@ export class ChatService {
   constructor(private usersService: UsersService, private messagesService: MessagesService ) {
     const userObservable = this.usersService.current();  
     userObservable.subscribe(user => { this.currentUser = user; });
-
-    const messObservable = this.messagesService.getMessages();
-    messObservable.subscribe(messages => { 
-      localStorage.setItem('messages', JSON.stringify(messages));
-    });
   }
 
   sendMessage(msg: string) {
@@ -40,7 +35,8 @@ export class ChatService {
       userName: this.userName
     });
 
-    this.messagesService.addMessages(this.chatMessages);
+    localStorage.setItem('messages', JSON.stringify(this.chatMessages));
+    //this.messagesService.sendMessages();
   }
 
   getUserName() {

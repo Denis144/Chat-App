@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChatService } from '../services/chat.service';
-import { UsersService } from '../services/users.service';
 
 @Component({
   selector: 'app-chatroom',

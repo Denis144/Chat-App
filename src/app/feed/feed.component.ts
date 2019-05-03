@@ -1,19 +1,22 @@
-import { Component, DoCheck, AfterViewChecked } from '@angular/core';
+import { Component, DoCheck, AfterViewChecked, Input } from '@angular/core';
 import { ChatService } from '../services/chat.service';
 import { ChatMessage } from '../models/chat-message.model';
+import { MessagesService } from '../services/messages.service';
 
 @Component({
   selector: 'app-feed',
   templateUrl: './feed.component.html',
   styleUrls: ['./feed.component.scss']
 })
-export class FeedComponent implements DoCheck, AfterViewChecked {
-  feed: Array<ChatMessage>;
+export class FeedComponent implements AfterViewChecked, DoCheck {
+  feed: Array<ChatMessage> = new Array<ChatMessage>();
 
-  constructor(private chatService: ChatService) { }
+  constructor(private chatService: ChatService, private messagesService: MessagesService) {}
 
   ngDoCheck() {
-    this.feed = this.chatService.getMessages();
+    this.messagesService.getMessages().subscribe(messages => { 
+      this.feed = messages.concat();
+    });
   }
 
   ngAfterViewChecked() {
