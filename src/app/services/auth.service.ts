@@ -9,12 +9,14 @@ import { Subscription } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  usersList: Array<User> = new Array<User>();
   currentUser: any;
   isNewUser: boolean;
   subscription: Subscription;
 
   constructor(private router: Router, private usersService: UsersService) {
+    if (!localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify(new Array<User>()));
+    }
     const observable = this.usersService.current();  
     this.subscription = observable.subscribe(user => { this.currentUser = user; });
   }
@@ -26,19 +28,13 @@ export class AuthService {
   }
 
   signUp(displayName: string) {
-    if (!localStorage.getItem('users')) {
-      localStorage.setItem('users', JSON.stringify(this.usersList));
-    }
-
     this.isNewUser = this.checkNewUser(displayName);
 
     if (this.isNewUser) {
-      this.usersList = this.getUsers();
-      this.usersList.push({
+      this.usersService.addUser({
         userName: displayName,
         isCurrent: true
       });
-      localStorage.setItem('users', JSON.stringify(this.usersList));
     }
   }
 
@@ -53,6 +49,7 @@ export class AuthService {
       }
     }
     return true;
+
   }
 
   getUsers(): Array<User> {

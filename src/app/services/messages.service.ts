@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { ChatMessage } from '../models/chat-message.model';
 import { UsersService } from '../services/users.service';
 import { EditMessageComponent } from '../edit-message/edit-message.component';
@@ -9,13 +9,17 @@ import { MatDialog } from '@angular/material';
   providedIn: 'root'
 })
 export class MessagesService {
-  subscriberMess = new BehaviorSubject<any>(new ChatMessage());
+  subscriberMess = new Subject<any>();
   currentUser: any;
 
   constructor(private usersService: UsersService, public dialog: MatDialog) {}
 
-  updateMessages(): void {
+  updateMessages(mess?: ChatMessage): void {
     const obj = JSON.parse(localStorage.getItem('messages'));
+    if(mess) {
+      obj.push(mess);
+      localStorage.setItem('messages', JSON.stringify(obj));
+    }
     this.subscriberMess.next(obj);
   }
 
