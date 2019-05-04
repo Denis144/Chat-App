@@ -21,7 +21,7 @@ export class UsersService {
   }
 
   current() {
-    this.addUser();
+    this.addUser(); // добавить аргументы и в зависисмоти от наличия или отсутствия вызывать localStorage
     return this.currentUser.asObservable();
   }
 }
