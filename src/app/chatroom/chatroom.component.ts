@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ChatService } from '../services/chat.service';
-
+import { UsersService } from '../services/users.service';
+import { User } from '../models/user.model';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chatroom',
   templateUrl: './chatroom.component.html',
   styleUrls: ['./chatroom.component.scss'],
-  providers: [ChatService]
+  providers: [UsersService]
 })
 export class ChatroomComponent {
-  userId: any;
+  currentUser$: Observable<User>;
 
-  constructor(route: ActivatedRoute, chatService: ChatService) { 
-    const el = route.snapshot.params['userId'];
-    chatService.userId = parseInt(el.match(/\d+/));
-    this.userId = chatService.userId;
+  constructor(private usersService: UsersService) {
+    this.currentUser$ = this.usersService.current();
   }
 }

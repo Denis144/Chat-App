@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { ChatGuardService } from './services/chat-guard.service';
 
 import { AppRoutingModule } from './app-routing.module';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +16,7 @@ import { MessageComponent } from './message/message.component';
 import { SignupFormComponent } from './signup-form/signup-form.component';
 import { EditMessageComponent } from './edit-message/edit-message.component';
 import { ChatHeaderComponent } from './chat-header/chat-header.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
     MessageComponent,
     SignupFormComponent,
     EditMessageComponent,
-    ChatHeaderComponent
+    ChatHeaderComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,7 @@ import { ChatHeaderComponent } from './chat-header/chat-header.component';
     BrowserAnimationsModule,
     MaterialModule
   ],
-  providers: [],
+  providers: [ChatGuardService],
   bootstrap: [AppComponent],
   entryComponents: [EditMessageComponent]
 })

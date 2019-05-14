@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { UsersService } from '../services/users.service';
 import { Router } from '@angular/router';
 import { User } from '../models/user.model';
 
@@ -6,50 +8,48 @@ import { User } from '../models/user.model';
   providedIn: 'root'
 })
 export class AuthService {
-  usersList: Array<User> = new Array<User>();
-  userId: any;
-  status: string = "new";
+  isNewUser: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private usersService: UsersService) {
+    if (!localStorage.getItem('users')) {
+      localStorage.setItem('users', JSON.stringify(new Array<User>()));
+    }
+  }
+
+  userNameValidator(control: FormControl): any {
+    if (!control.value) { return null; }
+    const valid = control.value.match(/^[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{0,}\s[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{1,}(\s[А-ЯA-Z][а-яa-zА-ЯA-Z\-]{1,})?$/);
+    return valid ? null : { userNameValidator: true };
+  }
 
   signUp(displayName: string) {
-    if(!localStorage.getItem('users')) {
-      localStorage.setItem('users', JSON.stringify(this.usersList));
-    }
+    this.isNewUser = this.checkNewUser(displayName);
 
-    const obj = JSON.parse(localStorage.getItem('users'));
-    for(var key in obj) {
-      if(obj[key]["userName"] === displayName) {
-        this.status = "old";
-      }
-    }
-    
-    if(this.status === "new") {
-      this.usersList = this.getUsers();
-      this.usersList.push({
-        userName: displayName
+    if (this.isNewUser) {
+      this.usersService.addUser({
+        userName: displayName,
+        isCurrent: true
       });
-      localStorage.setItem('users', JSON.stringify(this.usersList));
-      this.userId = this.getUserId(displayName);
-      return this.userId;
-    }
-    else {
-      this.userId = this.getUserId(displayName);
-      return this.userId;
     }
   }
 
-  getUsers(): Array<User> {
-    return JSON.parse(localStorage.getItem('users'));
+  checkNewUser(currentUserName: string) {
+    const users = JSON.parse(localStorage.getItem('users'));
+    const currentUser = users.find(({ userName }) => userName === currentUserName);
+
+    if (currentUser) {
+      currentUser.isCurrent = true;
+      localStorage.setItem('users', JSON.stringify(users));
+      return false;
+    }
+    return true;
   }
 
-  getUserId(username: string) {
-    const obj = JSON.parse(localStorage.getItem('users'));
-  
-    for(var key in obj) {
-      if(obj[key]["userName"] === username) {
-        return key;
-      }
-    }
+  logout(currentUserName: string) {
+    const users = JSON.parse(localStorage.getItem('users'));
+    const currentUser = users.find(({ userName }) => userName === currentUserName);
+
+    currentUser.isCurrent = false;
+    localStorage.setItem('users', JSON.stringify(users));
   }
 }

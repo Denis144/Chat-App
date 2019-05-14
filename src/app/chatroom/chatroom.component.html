@@ -1,5 +1,5 @@
-<div class="chatWindow">
-  <app-chat-header class="chatHeader" [currentUserId]="userId"></app-chat-header>
+<div class="chatWindow" *ngIf="currentUser$ | async as user">
+  <app-chat-header class="chatHeader" [currentUserName]=user.userName></app-chat-header>
   <app-feed class="chatContent"></app-feed>
-  <app-chat-form class="chatForm"></app-chat-form>
+  <app-chat-form class="chatForm" [currentUserName]=user.userName></app-chat-form>
 </div>
